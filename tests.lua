@@ -201,7 +201,7 @@ eq(pcall(function() adapter:snapshot() end),true,"Provider failure does not cras
 eq(adapter.Message:find("Ошибка",1,true)~=nil,true)
 local modules={}
 local function loadModule(path) modules[path]=modules[path] or dofile(path); return modules[path] end
-local app=loadModule("main.lua").start(loadModule,manifest,{Destroy=function() end})
+local app=loadModule("LegacyMain.lua").start(loadModule,manifest,{Destroy=function() end})
 local function find(name) return assert(app.Gui:FindFirstChild(name,true),"Missing "..name) end
 local function click(name) find(name).Activated:Fire() end
 eq(app.Running,false); eq(app.Selected,"defense")
@@ -224,7 +224,7 @@ app:BindGame(function() return {GodStatus=true,Progress={god=7},Source="verified
 eq(app.Views.god.Value,7); eq(app.Views.god.Status,"guide")
 humanoid.Health=0; heartbeat:Fire(1); eq(app.Views.god.Status,"waiting")
 local old=app
-app=loadModule("main.lua").start(loadModule,manifest,{Destroy=function() end})
+app=loadModule("LegacyMain.lua").start(loadModule,manifest,{Destroy=function() end})
 eq(old.Destroyed,true,"Repeated startup releases previous session")
 eq(app.Running,false)
 app:Destroy(); eq(aliveConnections(),0,"All app connections are released")
@@ -232,7 +232,7 @@ local previousHeartbeat=services.RunService.Heartbeat
 services.RunService.Heartbeat={Connect=function() error("heartbeat fixture failure") end}
 local reportDestroyed=false
 local initialized=pcall(function()
-    loadModule("main.lua").start(loadModule,manifest,{Destroy=function() reportDestroyed=true end})
+    loadModule("LegacyMain.lua").start(loadModule,manifest,{Destroy=function() reportDestroyed=true end})
 end)
 eq(initialized,false,"Failure after mounting GUI is reported")
 eq(reportDestroyed,false,"Initialization cleanup keeps the loading error strip available")
