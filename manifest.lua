@@ -1,4 +1,4 @@
-return {schemaVersion=1,version="0.1.0",entry="main.lua",systems={
+return {schemaVersion=1,version="0.1.1",entry="main.lua",systems={
     {name="QuestCatalog",path="QuestCatalog.lua"},
     {name="Progress",path="Progress.lua"},
     {name="QuestCore",path="QuestCore.lua"},

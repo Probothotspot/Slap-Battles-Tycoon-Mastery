@@ -131,6 +131,9 @@ for _,file in ipairs({"loader.lua","main.lua","Gui.lua","Adapter.lua","Cleanup.l
     eq(type(assert(loadfile(file))),"function","Compile "..file)
 end
 local P,Catalog=dofile("Progress.lua"),dofile("QuestCatalog.lua")
+eq(Catalog.Quests.god.Target,150,"Use the current in-game screenshot requirement")
+eq(P.parse("0/150(0%)",Catalog.Quests.god.Target),0,"Read the exact screenshot counter format")
+eq(P.parse("0/200(0%)",Catalog.Quests.god.Target),nil,"Outdated denominator is not accepted")
 for _,case in ipairs({{"0 / 500",500,0},{"42/500",500,42},{"1,500 / 15,000",15000,1500},
     {"1.5K / 15K",15000,1500},{"<b>200 / 200</b>",200,200},{"999 / 500",500,999}}) do
     eq(P.parse(case[1],case[2]),case[3],"Valid counter")
@@ -159,7 +162,7 @@ eq(points:update({Alive=true,Glove="Tycoon",OnMainIsland=true},p).Status,"guide"
 eq(god:update({Alive=true,Glove="Tycoon"},p).Status,"unbound")
 eq(god:update({Alive=true,Glove="Tycoon",GodStatus=false},p).Status,"upgrade")
 eq(god:update({Alive=true,Glove="Tycoon",GodStatus=true},p).Known,false,"God state is not itself a kill")
-p:set("god",200,"fixture"); eq(god:update({Alive=true},p).Status,"shown_complete")
+p:set("god",150,"fixture"); eq(god:update({Alive=true},p).Status,"shown_complete")
 now=22; eq(god:update({Alive=true},p).Status~="shown_complete",true,"Stale observations cannot declare current completion")
 local function make(class,name,parent,textValue)
     local object=Instance.new(class); object.Name=name; object.Parent=parent
@@ -178,7 +181,7 @@ make("TextLabel","Description",pointRow,"Accumulate points on the main island")
 make("TextLabel","Count",pointRow,"1.5K / 15K")
 local godRow=make("Frame","God",panel)
 make("TextLabel","Description",godRow,"End lives while at GOD STATUS")
-make("TextLabel","Count",godRow,"3 / 200")
+make("TextLabel","Count",godRow,"3 / 150")
 local tool=make("Tool","Tycoon",character)
 local progress=P.new(Catalog)
 local adapter=dofile("Adapter.lua").new({Player=player,Progress=progress,Parser=P,Catalog=Catalog})

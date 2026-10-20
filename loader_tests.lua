@@ -168,7 +168,7 @@ local function failed(options,detail)
 end
 reset()
 local app,report=boot()
-assert(app and app.Version=="0.1.0" and app.Gui.Parent and app.Gui.Enabled~=false)
+assert(app and app.Version=="0.1.1" and app.Gui.Parent and app.Gui.Enabled~=false)
 assert(earlyZero and report.Completed==1 and report.Errors==0 and report.Warnings==0)
 assert(report.State=="ready" and report.Finished and report.Hidden)
 assert(stripLabel().Text=="loading modules 1/1" and stripGui().Enabled==false)
